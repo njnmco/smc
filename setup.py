@@ -8,7 +8,7 @@ setuptools.setup(
     author_email='neal@njnm.co',
     description='Description of my package',
     package_dir={"eonacs": "src"},
-    packages=['eonacs', 'eonacs.common'],
+    packages=['eonacs.common'],
     python_requires='>=3.7',
     install_requires=['numpy >= 1.11.1', 'matplotlib >= 1.5.1'],
 )
