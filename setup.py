@@ -10,5 +10,5 @@ setuptools.setup(
     package_dir={"eonacs": "src"},
     packages=['eonacs', 'eonacs.common'],
     python_requires='>=3.7',
-    install_requires=['transformers', 'numpy >= 1.11.1'],
+    install_requires=['transformers', 'numpy', 'umap-learn'],
 )
