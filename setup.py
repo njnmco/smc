@@ -7,7 +7,7 @@ setuptools.setup(
     author='Neal Fultz',
     author_email='neal@njnm.co',
     description='Description of my package',
-    package_dir={"": "src"},
+    package_dir={"eonacs": "src"},
     packages=setuptools.find_packages(where="src"),
     python_requires='>=3.7',
     install_requires=['numpy >= 1.11.1', 'matplotlib >= 1.5.1'],
