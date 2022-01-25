@@ -7,7 +7,7 @@ def colab_map_drive():
 
 ONET_PATH ="/content/drive/MyDrive/smc/data/onet.sqlite3"
 
-def onet_db(ONET_PATH):
+def onet_db(db_path=ONET_PATH):
     import sqlite3
-    return sqlite3.connect(ONET_PATH)
+    return sqlite3.connect(db_path)
 
