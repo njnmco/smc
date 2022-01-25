@@ -7,7 +7,6 @@ setuptools.setup(
     author='Neal Fultz',
     author_email='neal@njnm.co',
     description='Description of my package',
-    packages=find_packages(),
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     python_requires='>=3.7',
