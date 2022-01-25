@@ -23,3 +23,5 @@ done
 jq -r '.PublicSearch.SearchResults[].Reports[0].url ' data/curricunet/cs_*.json | \
     sed 's_^_https://santamonica.curricunet.com_' | \
     wget -i - -nc -P data/curricunet
+
+find data/curricunet -name '*reportId=5' -exec python3 src/fetch/etl_course.py '{}' \;
