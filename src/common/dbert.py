@@ -48,7 +48,7 @@ def get_embeddings(model, X):
     N = X.shape[0]
     for i,j in itertools.pairwise(range(0, N, 1024)):
         print(f"{i}...")
-        ret.append(embed_slice(X[i:j,:])
+        ret.append(embed_slice(X[i:j,:]))
 
     if j < N:
         print(f"{j}...")
