@@ -33,7 +33,17 @@ def pairwise(iterable):
     next(b, None)
     return zip(a, b)
 
-def get_embeddings(model, X):
+def get_embeddings(phrases, tokenizer=None, model=None):
+    if tokenizer is None and model is None:
+	tokenizer, model = dbert()
+    toks = phrases.apply(tokenizer.encode)
+
+    pad_series(toks, 66)
+    X = tokens_to_np(toks)
+    features = apply_model(model, X)
+    return features
+
+def apply_model(model, X):
 
     ret = list()
 
