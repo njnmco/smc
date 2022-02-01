@@ -35,7 +35,7 @@ def pairwise(iterable):
 
 def get_embeddings(phrases, tokenizer=None, model=None):
     if tokenizer is None and model is None:
-	tokenizer, model = dbert()
+        tokenizer, model = dbert()
     toks = phrases.apply(tokenizer.encode)
 
     pad_series(toks, 66)
