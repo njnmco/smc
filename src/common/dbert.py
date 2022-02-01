@@ -16,7 +16,7 @@ def pad_series(series):
                  max_width = series.apply(len).max()    )
 
 def tokens_to_np(toks):
-    return np.array(dwa_tok.to_list())
+    return np.array(toks.to_list())
 
 def get_embeddings(model, X):
     input_ids = torch.tensor(X)
