@@ -4,6 +4,10 @@ import numpy as np
 
 _device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+def set_device(device):
+    global _device
+    _device = device
+
 
 def dbert():
     tokenizer = transformers.DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
@@ -24,9 +28,9 @@ def get_embeddings(model, X):
 
     print(f"Using {_device}")
 
-    input_ids = input_ids.to(device)
-    attention_mask = attention_mask.to(device)
-    model = model.to(device)
+    input_ids = input_ids.to(_device)
+    attention_mask = attention_mask.to(_device)
+    model = model.to(_device)
 
     with torch.no_grad():
             last_hidden_states = model(input_ids, attention_mask=attention_mask)
