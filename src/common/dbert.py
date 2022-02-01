@@ -64,6 +64,6 @@ def get_embeddings(model, X):
         ret.append(embed_slice(X[j:N,:]))
 
 
-    return ret
+    return np.concatenate(ret)
 
 
