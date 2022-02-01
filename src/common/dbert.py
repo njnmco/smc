@@ -19,7 +19,9 @@ def dbert():
 # NB - truncate to K tokens to keep memory usage down.
 def pad_series(series, K=50):
     K = min(K, series.apply(len).max())
-    series.apply(lambda x: x.extend([0]*(K - len(x))))
+    for x in series:
+        x.extend([0]*(K - len(x)))
+        x[:] = x[:K]
 
 def tokens_to_np(toks):
     return np.array(toks.to_list())
