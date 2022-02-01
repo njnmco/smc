@@ -1,6 +1,7 @@
 import transformers
 import torch
 import numpy as np
+import itertools
 
 _device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -23,20 +24,34 @@ def tokens_to_np(toks):
     return np.array(toks.to_list())
 
 def get_embeddings(model, X):
-    input_ids = torch.tensor(X)
-    attention_mask = torch.tensor(np.where(X != 0, 1, 0))
+
+    ret = list()
 
     print(f"Using {_device}")
-
-    input_ids = input_ids.to(_device)
-    attention_mask = attention_mask.to(_device)
     model = model.to(_device)
 
-    with torch.no_grad():
-            last_hidden_states = model(input_ids, attention_mask=attention_mask)
+    def embed_slice(X):
+        input_ids = torch.tensor(X)
+        attention_mask = torch.tensor(np.where(X != 0, 1, 0))
 
-    features = last_hidden_states[0][:,0,:].cpu().numpy()
 
-    return features
+        input_ids = input_ids.to(_device)
+        attention_mask = attention_mask.to(_device)
+
+        with torch.no_grad():
+                last_hidden_states = model(input_ids, attention_mask=attention_mask)
+
+        features = last_hidden_states[0][:,0,:].cpu().numpy()
+        return features
+
+    N = X.shape[0]
+    for i,j in itertools.pairwise(range(0, N, 1024)):
+        ret.append(embed_slice(X[i:j,:])
+
+    if j < N:
+        ret.append(embed_slice(X[j:N,:]))
+
+
+    return ret
 
 
