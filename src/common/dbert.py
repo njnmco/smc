@@ -1,7 +1,6 @@
 import transformers
 import torch
 import numpy as np
-import itertools
 
 _device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -26,6 +25,14 @@ def pad_series(series, K=50):
 def tokens_to_np(toks):
     return np.array(toks.to_list())
 
+# Note available in itertools until 3.10
+def pairwise(iterable):
+    from itertools import tee
+    # pairwise('ABCDEFG') --> AB BC CD DE EF FG
+    a, b = tee(iterable)
+    next(b, None)
+    return zip(a, b)
+
 def get_embeddings(model, X):
 
     ret = list()
@@ -48,7 +55,7 @@ def get_embeddings(model, X):
         return features
 
     N = X.shape[0]
-    for i,j in itertools.pairwise(range(0, N, 1024)):
+    for i,j in pairwise(range(0, N, 1024)):
         print(f"{i}...")
         ret.append(embed_slice(X[i:j,:]))
 
