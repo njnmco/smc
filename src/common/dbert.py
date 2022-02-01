@@ -16,9 +16,11 @@ def dbert():
     return tokenizer, model
 
 # NB - must pad with zeros, using other values could lead to downstream array indexing errors
-def pad_series(series):
-    series.apply(lambda x, max_width: x.extend([0]*(max_width - len(x))),
-                 max_width = series.apply(len).max()    )
+def pad_series(series, K=50):
+    series.apply(
+            lambda x, max_width: x.extend([0]*(max_width - len(x))),
+            max_width = min(K, series.apply(len).max())
+    )
 
 def tokens_to_np(toks):
     return np.array(toks.to_list())
