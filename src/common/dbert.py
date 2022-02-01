@@ -64,6 +64,7 @@ def apply_model(model, X):
         features = last_hidden_states[0][:,0,:].cpu().numpy()
         return features
 
+    i, j = 0, 0
     N = X.shape[0]
     for i,j in pairwise(range(0, N, 1024)):
         print(f"{i}...")
