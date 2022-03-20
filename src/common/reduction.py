@@ -1,6 +1,7 @@
 import umap
 from pacmap import pacmap
 from sklearn.preprocessing import StandardScaler
+import numpy as np
 
 
 def reduction(features):
