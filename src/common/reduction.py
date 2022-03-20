@@ -23,7 +23,7 @@ class PaCMAP2(pacmap.PaCMAP):
     super().fit(X, Xp=X[:2, :], *args, **kwargs)
     self.X = X
     self.embedding_ = self.embedding_[0]
-    self.proj = np.linalg.lstsq(self.X, self.embedding_)[0]
+    self.proj = np.linalg.lstsq(self.X, self.embedding_, rcond=None)[0]
 
 
   def transform(self, Xp, iters=None, lr=None):
@@ -45,14 +45,14 @@ class PaCMAP2(pacmap.PaCMAP):
         self.distance,
         lr or self.lr,
         iters or self.num_iters,
-        new_embed, ### !!!
+        new_embed, ### !!! warm start
         self.apply_pca,
         self.verbose,
         self.intermediate,
         self.random_state, Xp
     )
 
-    proj = np.linalg.lstsq(new_embed[0], self.embedding_)[0]
+    proj = np.linalg.lstsq(new_embed[0], self.embedding_, rcond=None)[0]
 
     #print(proj)
 
