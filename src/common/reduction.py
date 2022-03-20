@@ -1,5 +1,5 @@
 import umap
-from pacmap import pacmap
+import pacmap
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 
