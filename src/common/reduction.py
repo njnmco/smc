@@ -24,6 +24,7 @@ class PaCMAP2(pacmap.PaCMAP):
     self.X = X
     self.embedding_ = self.embedding_[0]
     self.proj = np.linalg.lstsq(self.X, self.embedding_, rcond=None)[0]
+    return self
 
 
   def transform(self, Xp, iters=None, lr=None):
@@ -58,5 +59,5 @@ class PaCMAP2(pacmap.PaCMAP):
 
     new_embed = [np.matmul(x, proj) for x in new_embed]
 
-    return new_embed
+    return new_embed[1]
 
