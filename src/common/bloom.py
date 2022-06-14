@@ -15,6 +15,18 @@ bloom = dict(
 )
 
 def bloom_categories(tasks):
+    """Bloom's Taxonomy embedding
+
+    Embed tasks using Bloom's taxonomy
+
+    Parameters:
+    tasks (pd.Series): Text
+
+    Returns:
+    np.array, rows normalized to sum to unity
+
+
+    """
 
     stemmer = nltk.stem.SnowballStemmer("english").stem
 

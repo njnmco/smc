@@ -5,14 +5,44 @@ import numpy as np
 _device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def set_device(device):
+    """Set default torch device
+
+    Parameters:
+    device (torch.device)
+    """
     global _device
     _device = device
 
 
 def dbert():
+    """Load a default DistilBert model
+
+    Returns:
+    tokenizer
+    model
+    """
     tokenizer = transformers.DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
     model = transformers.DistilBertModel.from_pretrained('distilbert-base-uncased')
     return tokenizer, model
+
+def tebert(path=None):
+    """Loads a fine-tuned task-embedding bert
+
+    Parameters:
+    path - location of model weights. If none, use package.
+
+    Returns:
+    tokenizer
+    model
+    """
+
+    if path == None:
+        pass
+
+    tokenizer = transformers.DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+    model = transformers.AutoModelForSequenceClassification.from_pretrained(path)
+    return tokenizer, model
+
 
 # NB - must pad with zeros, using other values could lead to downstream array indexing errors
 # NB - truncate to K tokens to keep memory usage down.
@@ -44,6 +74,18 @@ def get_embeddings(phrases, tokenizer=None, model=None):
     return features
 
 def apply_model(model, X):
+    """Evaluate a model
+
+    Evaluate a model in chunks of 1024 observations, optionally using a GPU device.
+
+    Parameters:
+    model (transformers Model)
+    X (np.array): tokenized (and padded) phrases
+
+    Returns:
+    np.array
+
+    """
 
     ret = list()
 

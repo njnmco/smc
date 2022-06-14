@@ -1,5 +1,20 @@
-import time
+"""Tuning PacMAP
 
+This module contains the helper methods necessary to tune a PacMAP model. If
+run directly, using
+
+    python -m eonacs.common.tune
+
+It will load data and run 100 iterations of hyperopt, and print the best fit found.
+
+The loss function is a nonparametric 'stress' - the ability of the reduced
+space to represent distances between points. This is captured by the spearman
+correlation of the pairwise distances between the complete points and reduced
+dimensionality points.
+
+
+"""
+import time
 
 import pandas as pd
 import numpy as np
@@ -10,21 +25,24 @@ from scipy.spatial.distance import pdist
 import pacmap
 
 def loss(Y, Yhat):
+    """Spearman stress
+    """
     r = spearmanr(pdist(Y), pdist(Yhat)).correlation
     return 1-r
 
 
 def cv_par(features, nfolds, loss, pacmap_params):
+    """Cross validation
+    """
     folds = np.random.randint(0, nfolds, features.shape[0])
     ARGS = zip(range(nfolds), (features,)*nfolds, (folds,)*nfolds, (loss,)*nfolds, (pacmap_params,)*nfolds)
 
     return map(score_fold_par, ARGS)
 
-    # return score_fold_par(next(ARGS))
-#    with multiprocessing.Pool(5) as pool:
-#        return pool.map(score_fold_par, ARGS)
 
 def score_fold_par(ARGS):
+    """Score a single fold
+    """
     i, features, folds, loss, pacmap_params = ARGS
     train, test = features[folds != i, :], features[folds == i, :]
     m = pacmap.PaCMAP(**pacmap_params, save_tree=True)
@@ -55,6 +73,16 @@ from eonacs.common.bloom import bloom_categories
 from eonacs.common.nlp import hashtrick
 
 def a_trial(s):
+    """Run a single trial for tuning
+
+    Parameters:
+    s: hyperparamters
+
+    Returns:
+    Trial results
+
+    """
+
     NFOLDS=5
 
     buckets = int(s[0])
@@ -93,11 +121,12 @@ def a_trial(s):
 if __name__ == "__main__":
 
 
-    TRIAL_PICKLE = "data/tasks_dbert_hyper_e_refactor.pkl.gz"
+    EMBED = "data/tasks_dbert_hyper_e_refactor.pkl.gz"
     print("Loading data...")
-    tasks, hyper_e = pd.read_pickle(TRIAL_PICKLE)
+    tasks, hyper_e = pd.read_pickle(EMBED)
 
     t = pd.read_pickle("data/hyperopt_refactor.pkl") # Trials()
+    TRIAL_PICKLE = "data/hyperopt_refactor_100.pkl.gz"
     best = fmin(a_trial, space, hyperopt.tpe.suggest, 100, trials=t)
     pd.to_pickle(t, TRIAL_PICKLE)
     print(best)
