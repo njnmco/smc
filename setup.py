@@ -1,4 +1,6 @@
 import setuptools
+import os
+
 
 setuptools.setup(
     name='eonacs',
@@ -11,4 +13,5 @@ setuptools.setup(
     packages=['eonacs', 'eonacs.common'],
     python_requires='>=3.7',
     install_requires=['transformers', 'numpy', 'pacmap'],
+    package_data = { 'eonacs': ["model/*"]}  if os.path.exists('src/model') else {}
 )

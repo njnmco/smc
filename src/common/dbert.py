@@ -37,7 +37,7 @@ def tebert(path=None):
     """
 
     if path == None:
-        pass
+        path = __file__.replace("common/dbert.py", "model")
 
     tokenizer = transformers.DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
     model = transformers.AutoModelForSequenceClassification.from_pretrained(path)
