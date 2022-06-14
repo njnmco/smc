@@ -103,7 +103,10 @@ def apply_model(model, X):
         with torch.no_grad():
             last_hidden_states = model(input_ids, attention_mask=attention_mask)
 
-        features = last_hidden_states[0][:,0,:].cpu().numpy()
+        features = last_hidden_states[0]
+        if len(features.shape) > 2:
+            features = features[:,0,:]
+        features = features.cpu().numpy()
         return features
 
     i, j = 0, 0
