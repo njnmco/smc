@@ -39,3 +39,4 @@ def qdist(dsample, alter):
 
     D_alter_quantile =  np.array([ np.searchsorted(D_quantile[i,:], D_alter[i,:]) for i in range(n)  ])
     D_alter_quantile = 100 *( 1 - D_alter_quantile / n)
+    return D_alter_quantile
